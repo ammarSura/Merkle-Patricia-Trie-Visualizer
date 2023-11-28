@@ -20,7 +20,6 @@ export default function LineDraw({
         x: endPoint.x + (nodeWidth / 2),
         y: endPoint.y
     }
-    console.log('startPoint', getAngle(startPoint, endPoint))
     return (
         <div
             style={{

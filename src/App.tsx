@@ -15,7 +15,6 @@ function App() {
   }[]>([])
   useEffect(() => {
     setShouldReDrawTrie(true)
-    console.log(mpt.current?.rootKey, 'ASD')
   }, [])
 
   return (
