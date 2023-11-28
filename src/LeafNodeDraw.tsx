@@ -16,6 +16,7 @@ export default function LeafNodeDraw(props: LeafNodeProps) {
         <NodeButton
             {...props}
             label={"Leaf: "}
+            backgroundColor={"#74c288"}
         />
     )
 }

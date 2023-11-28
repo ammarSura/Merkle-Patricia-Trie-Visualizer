@@ -20,6 +20,7 @@ export default function ExtensionNodeDraw(props: ExtensionNodeProps) {
         <NodeButton
             {...rest}
             label={"Extension: "}
+            backgroundColor={"#74a1db"}
             />
         <LineDraw
             startPoint={rest.coors}

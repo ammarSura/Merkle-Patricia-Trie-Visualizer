@@ -1,7 +1,6 @@
 import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Heading, Stack } from "@chakra-ui/react"
 import { utf8ToBytes } from "ethereum-cryptography/utils";
 import { bytesToNibbles } from "./mpt/utils";
-
 type KeyValueDisplayPropsType = {
     keyValuePairs: {
         key: string

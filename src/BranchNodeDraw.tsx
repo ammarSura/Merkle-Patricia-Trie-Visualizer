@@ -18,7 +18,8 @@ export default function Draw(props: BranchNodeProps) {
        <NodeButton
             _key={[]}
             {...rest}
-            label={"Branch: "}
+            label={"Branch "}
+            backgroundColor={"#c4ac80"}
        />
         {
             nextNodes.map((nextNode, index) => {

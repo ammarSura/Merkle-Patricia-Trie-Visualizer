@@ -11,12 +11,14 @@ type NodeButtonProps = {
         y: number
     }
     label: string
+    backgroundColor: string
 }
 export default function NodeButton({
     _key,
     value,
     coors,
-    label
+    label,
+    backgroundColor
 }: NodeButtonProps) {
     const [showValue, setShowValue] = useState(false)
     const buttonText = showValue ? `Value: ${value}`: `${label}${_key.join('')}`
@@ -27,7 +29,7 @@ export default function NodeButton({
                 setShowValue(!showValue)
             }}
             style={{
-                backgroundColor: "#68b867",
+                backgroundColor,
                 top: coors.y,
                 left: coors.x,
                 ...nodeStyle
