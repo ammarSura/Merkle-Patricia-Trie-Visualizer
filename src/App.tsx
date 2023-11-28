@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { MPT } from "./mpt";
-import { getKeyValuePairInBytes } from "./mpt/utils";
 import DrawTrie from "./DrawTrie";
 import KeyValueInput from "./KeyValueInput";
 import KeyValueDisplay from "./KeyValueDisplay";
 import { Heading, Stack } from "@chakra-ui/react";
+import { getKeyValuePairInBytes } from "./mpt/utils";
 
 function App() {
   const [shouldReDrawTrie, setShouldReDrawTrie] = useState(false)
