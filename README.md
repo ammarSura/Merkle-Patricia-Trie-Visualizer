@@ -1,6 +1,7 @@
-**Merkle Patricia Trie Visualizer**
+**Merkle Patricia Trie Visualizer**\
 This is a simple react app to visualize Merkle Patricia Tries. It also includes a basic implementation of it in src/mpt. Below is an explanation of an MPT using pseudo code. 
-**Merkle Patricia Trie Implementation**
+
+**Merkle Patricia Trie Explanation**\
 
 A Merkle Patricia Trie is a mixed data structure which combines the immutability of a Merkle Trie and the compression of a Patricia Trie. It also allows us to have Merkle proofs for any given element if the trie is available to us. It enables us to store key-value pairs efficiently.
 
