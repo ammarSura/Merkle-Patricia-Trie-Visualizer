@@ -58,12 +58,15 @@ export default function getNodes(mpt: MPT, rootKey: Uint8Array | undefined, curr
                     <ExtensionNodeDraw
                         _key={decodedChild.key()}
                         nextNode={nextCoors}
-                        coors={currCors}
+                        coors={nextCoors}
                         value={decodedChild.value()}
                     />,
                 );
 
-                const nextNodes = getNodes(mpt, decodedChild.value(), nextCoors);
+                const nextNodes = getNodes(mpt, decodedChild.value(), {
+                    x: nextCoors.x,
+                    y: nextCoors.y + (nodeStyle.height as number) * 1.75
+                });
                 if(nextNodes?.length) {
                     nodes.push(...nextNodes);
                 }

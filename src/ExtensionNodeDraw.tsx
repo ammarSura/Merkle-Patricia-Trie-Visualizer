@@ -1,5 +1,6 @@
 import LineDraw from "./LineDraw"
 import NodeButton from "./NodeButton"
+import nodeStyle from "./node-style"
 
 export type CoorsType = {
     x: number
@@ -22,9 +23,24 @@ export default function ExtensionNodeDraw(props: ExtensionNodeProps) {
             label={"Extension: "}
             backgroundColor={"#74a1db"}
             />
-        <LineDraw
-            startPoint={rest.coors}
-            endPoint={nextNode} />
-        </>
+            {
+                nextNode && (
+                    <LineDraw
+                startPoint={{
+                    x: rest.coors.x + (nodeStyle.width as number) / 2,
+                    y: rest.coors.y
+                }}
+                endPoint={{
+                    x: rest.coors.x + (nodeStyle.width as number) / 2,
+                    y: rest.coors.y + (nodeStyle.height as number) * 1.75
+                }}
+                shouldAdjustPoints={false}
+                borderColor="grey"
+
+        />
+                )
+            }
+
+       </>
     )
 }
