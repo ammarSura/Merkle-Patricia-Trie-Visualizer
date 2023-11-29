@@ -3,7 +3,7 @@ import { MPT } from "./mpt";
 import DrawTrie from "./DrawTrie";
 import KeyValueInput from "./KeyValueInput";
 import KeyValueDisplay from "./KeyValueDisplay";
-import { Button, Heading, Stack } from "@chakra-ui/react";
+import { Box, Button, Heading, Stack } from "@chakra-ui/react";
 import { getKeyValuePairInBytes } from "./mpt/utils";
 const keyValuePairsInit = [
   {
@@ -22,6 +22,7 @@ const keyValuePairsInit = [
 function App() {
   const [shouldReDrawTrie, setShouldReDrawTrie] = useState(false)
   const mpt = useRef<MPT | null>(new MPT());
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const [keyValuePairs, setKeyValuePairs] = useState<{
     key: string
     value: string
@@ -32,7 +33,6 @@ function App() {
     mpt.current?.put(...getKeyValuePairInBytes('pranav', '456'))
     mpt.current?.put(...getKeyValuePairInBytes('amar', '789'))
     setKeyValuePairs(keyValuePairsInit)
-
   }
   return (
     mpt.current && (
@@ -40,24 +40,36 @@ function App() {
       <Heading
         textAlign='center'
         size='lg'
+        position='fixed'
+        left='42.5%'
       >
         Merkle Patricia Trie
       </Heading>
+      <Box
+        border='solid'
+        width='150vw'
+        overflow={'scroll'}
+        ref={containerRef}
+      >
         <DrawTrie
           rootKey={mpt.current.rootKey}
           mpt={mpt.current}
           shouldReDrawTrie={shouldReDrawTrie}
           setShouldReDrawTrie={setShouldReDrawTrie}
+          startPoint={{
+            x: (containerRef.current?.getBoundingClientRect().width || 0)  / 2,
+            y: 100
+          }}
         />
+      </Box>
         <Stack
-          align='end'
-          p='1rem'
-        >
-        <Stack
-          border={'solid grey'}
           width='20%'
           p='0.5rem'
           borderRadius='md'
+          position='fixed'
+          right='0px'
+          bg='white'
+          boxShadow='lg'
         >
         <KeyValueInput
           handleSubmit={(key, value) => {
@@ -93,7 +105,6 @@ function App() {
         >
           Clear
         </Button>
-        </Stack>
         </Stack>
       </>
     )
