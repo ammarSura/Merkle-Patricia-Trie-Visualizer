@@ -21,7 +21,7 @@ export default function NodeButton({
     backgroundColor
 }: NodeButtonProps) {
     const [showValue, setShowValue] = useState(false)
-    const buttonText = showValue ? `Value: ${value}`: `${label}${_key.join('')}`
+    const buttonText = showValue ? `Value: ${value}`: `${label}${_key.join(',')}`
     const truncatedText = buttonText.length > MAX_KEY_LENGTH ? buttonText.slice(0, MAX_KEY_LENGTH) + '...' : buttonText
     return (
         <Button
