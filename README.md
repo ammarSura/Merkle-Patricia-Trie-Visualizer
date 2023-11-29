@@ -36,12 +36,12 @@ get(rootNode, searchKey) {
 }
 
 put(key, value) {
-    var targetNode = **get** (key)
+    var targetNode = get(key)
     targetNode.value = value
 }
 
 del (key) {
-    **put** (key, null)
+    put(key, null)
 }
 ```
 
@@ -60,27 +60,27 @@ mpt = {
       //to the path in the parameter.
       var currentRootNode = **db**.get(rootKey)
       if currentRootNode is Leaf Node {
-        return **leafCheck** (currentRootNode, searchKey)
+        return leafCheck(currentRootNode, searchKey)
       } else if currentRootNode is Extension Node {
-          var extCheckVal = **extensionCheck** (currentRootNode, searchKey)
+          var extCheckVal = extensionCheck(currentRootNode, searchKey)
           if(extCheckVal) {
             searchKey = searchKey with matching prefix removed
-            return **get** (extCheckVal, searchKey)
+            return get(extCheckVal, searchKey)
           } else return null
       } else if currentRootNode is BranchNode {
-          var branchCheckVal = **branchCheck** (currentRootNode, searchKey)
+          var branchCheckVal = branchCheck(currentRootNode, searchKey)
           if(branchCheckVal is a node) {
             return currentRootNode
           } else if(branchCheckVal is a key) {
             searchKey = searchKey with the first element removed
-            return **get** (branchCheckVal, searchKey)
+            return get(branchCheckVal, searchKey)
       } else return null
     
   put(key, value){
     var pathStack
-    result = **get** ( **globalRootKey** , key, pathStack)
+    result = get(globalRootKey, key, pathStack)
     if(pathStack.length == 1) {
-      **handlePointingRootToNode** ( **db**.get(globalRootKey), result)
+      handlePointingRootToNode(db.get(globalRootKey), result)
     }
     if(result is node) {
       result.value = value
@@ -92,9 +92,9 @@ mpt = {
       var currentParentNode = **db**.get(currentPathKey)
       var updatedNode
       if(currentParentNode is BranchNode) {
-        updatedNode = **handlePointingBranchToNode** (currentParentNode, result)
+        updatedNode = handlePointingBranchToNode(currentParentNode, result)
       } else if(currentParentNode is ExtensionNode) {
-        updatedNode = **handlePointingExtensionToNode** (currentParentNode, result)
+        updatedNode = handlePointingExtensionToNode(currentParentNode, result)
       }
     }
 }
