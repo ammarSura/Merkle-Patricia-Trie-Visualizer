@@ -1,4 +1,5 @@
 **Merkle Patricia Trie Visualizer**
+
 This is a simple react app to visualize Merkle Patricia Tries. It also includes a basic implementation of it in src/mpt. Below is an explanation of an MPT using pseudo code. 
 
 **Explanation**
