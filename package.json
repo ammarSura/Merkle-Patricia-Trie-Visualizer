@@ -22,6 +22,7 @@
     "framer-motion": "^10.16.5",
     "noble": "^1.9.1",
     "react": "^18.2.0",
+    "react-d3-dag": "^0.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
