@@ -36,7 +36,7 @@ export default function KeyValueDisplay({ keyValuePairs }: KeyValueDisplayPropsT
                     {
                         keyValuePairs.map((keyValuePair, index) => (
                             <Tr key={index}>
-                                <Td>{bytesToNibbles(utf8ToBytes(keyValuePair.key))}</Td>
+                                <Td>{bytesToNibbles(utf8ToBytes(keyValuePair.key)).join(',')}</Td>
                                 <Td>{keyValuePair.key}</Td>
                                 <Td>{keyValuePair.value}</Td>
                             </Tr>
