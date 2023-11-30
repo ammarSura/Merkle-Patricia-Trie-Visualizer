@@ -1,6 +1,5 @@
-import { useMemo } from "react"
 import { MPT } from "./mpt"
-import getNodes from "./getNode"
+import { handleNodeRender } from "./getNode"
 import { CoorsType } from "./ExtensionNodeDraw"
 
 type DrawTrieProps = {
@@ -11,18 +10,10 @@ type DrawTrieProps = {
     startPoint: CoorsType
 }
 
-export default function DrawTrie({ mpt, rootKey, shouldReDrawTrie, startPoint }: DrawTrieProps) {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const elementsToBeDrawn: React.ReactNode[] | undefined = useMemo(() => getNodes(mpt, rootKey, startPoint), [mpt, rootKey, startPoint, shouldReDrawTrie])
-    return (
-        <>
-            {
-                elementsToBeDrawn?.map((element, index) => (
-                    <div key={index}>
-                        {element}
-                    </div>
-                ))
-            }
-        </>
-    )
+export default function DrawTrie({ mpt, rootKey, startPoint }: DrawTrieProps) {
+    if(!rootKey) {
+        return null
+    }
+    const currentRootNode = mpt.getDecodedNodeFromDb(rootKey);
+    return handleNodeRender(currentRootNode, startPoint, mpt);
 }

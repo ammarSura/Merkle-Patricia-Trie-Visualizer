@@ -1,8 +1,8 @@
+import { LeafNode } from "@ethereumjs/trie"
 import NodeButton from "./NodeButton"
 
 type LeafNodeProps = {
-    _key: number[]
-    value: Uint8Array
+    trieNode: LeafNode
     coors: {
         x: number
         y: number
@@ -11,10 +11,17 @@ type LeafNodeProps = {
 
 export const MAX_KEY_LENGTH = 4
 
-export default function LeafNodeDraw(props: LeafNodeProps) {
+export default function LeafNodeDraw({
+    trieNode,
+    coors
+}: LeafNodeProps) {
+    const key = trieNode.key()
+    const value = trieNode.value()
     return (
         <NodeButton
-            {...props}
+            coors={coors}
+            _key={key}
+            value={value}
             label={"Leaf: "}
             backgroundColor={"#74c288"}
         />

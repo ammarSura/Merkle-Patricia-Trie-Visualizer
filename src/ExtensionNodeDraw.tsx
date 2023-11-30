@@ -1,6 +1,7 @@
-import LineDraw from "./LineDraw"
+import { ExtensionNode } from "@ethereumjs/trie"
 import NodeButton from "./NodeButton"
-import nodeStyle from "./node-style"
+import { MPT } from "./mpt"
+import { handleNodeRender } from "./getNode"
 
 export type CoorsType = {
     x: number
@@ -8,39 +9,28 @@ export type CoorsType = {
 
 }
 type ExtensionNodeProps = {
-    _key: number[]
-    value: Uint8Array
+    trieNode: ExtensionNode
     coors: CoorsType
-    nextNode: CoorsType
+    mpt: MPT
 }
 
 export default function ExtensionNodeDraw(props: ExtensionNodeProps) {
-    const {nextNode, ...rest } = props
+    const { trieNode, coors, mpt } = props
+    const key = trieNode.key()
+    const value = trieNode.value()
+    const decodedChild = mpt.getDecodedNodeFromDb(value as Uint8Array)
     return (
         <>
-        <NodeButton
-            {...rest}
-            label={"Extension: "}
-            backgroundColor={"#74a1db"}
+            <NodeButton
+                coors={coors}
+                _key={key}
+                value={value}
+                label={"Extension: "}
+                backgroundColor={"#74a1db"}
             />
             {
-                nextNode && (
-                    <LineDraw
-                startPoint={{
-                    x: rest.coors.x + (nodeStyle.width as number) / 2,
-                    y: rest.coors.y
-                }}
-                endPoint={{
-                    x: rest.coors.x + (nodeStyle.width as number) / 2,
-                    y: rest.coors.y + (nodeStyle.height as number) * 1.75
-                }}
-                shouldAdjustPoints={false}
-                borderColor="grey"
-
-        />
-                )
+                handleNodeRender(decodedChild, coors, mpt)
             }
-
        </>
     )
 }
