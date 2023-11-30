@@ -1,4 +1,4 @@
-import { CoorsType } from "./ExtensionNodeDraw"
+import { CoorsType } from "./NodeButton"
 import nodeStyle from "./node-style"
 
 type LineDrawProps = {

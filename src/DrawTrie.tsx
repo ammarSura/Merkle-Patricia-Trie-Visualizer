@@ -1,6 +1,6 @@
+import { handleNodeRender } from "./handleNodeRender"
 import { MPT } from "./mpt"
-import { handleNodeRender } from "./getNode"
-import { CoorsType } from "./ExtensionNodeDraw"
+import { CoorsType } from "./NodeButton"
 
 type DrawTrieProps = {
     rootKey: Uint8Array | undefined

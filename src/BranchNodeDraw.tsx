@@ -1,16 +1,10 @@
-import { BranchNode, decodeNode } from "@ethereumjs/trie"
-// import LineDraw from "./LineDraw"
-// import NodeButton from "./NodeButton"
+import { BranchNode, ExtensionNode, decodeNode } from "@ethereumjs/trie"
 import nodeStyle from "./node-style"
-import { handleNodeRender } from "./getNode"
-import NodeButton from "./NodeButton"
+import NodeButton, { CoorsType } from "./NodeButton"
 import { MPT } from "./mpt"
 import LineDraw from "./LineDraw"
-export type CoorsType = {
-    x: number
-    y: number
+import { handleNodeRender } from "./handleNodeRender"
 
-}
 type BranchNodeProps = {
     coors: CoorsType
     trieNode: BranchNode
@@ -28,6 +22,7 @@ export default function BranchNodeDraw({
     const offset = (nodeStyle.width as number) * 1.1
     const branchLineHeighFactor = 1.6
     const childNodeHeightFactor = 1.75
+    let extensionNodeCount = 0
     return (
         <>
        <NodeButton
@@ -85,9 +80,14 @@ export default function BranchNodeDraw({
                 const decodedChild = child ? decodeNode(child as Uint8Array) : null
                 const nextX = index < 8 ? midPointX - offset * (index + 1) : midPointX + offset * (index % 8)
                 const nextY = coors.y + (nodeStyle.height as number) * childNodeHeightFactor
-                const nextCoors = {
+                const nextCoors: CoorsType = {
                     x: nextX,
                     y: nextY
+                }
+                if(decodedChild instanceof ExtensionNode) {
+                    console.log('extensionNodeCount', extensionNodeCount, index)
+                    nextCoors.childOffset = extensionNodeCount * 10
+                    extensionNodeCount++
                 }
                 return handleNodeRender(decodedChild, nextCoors, mpt)
             })

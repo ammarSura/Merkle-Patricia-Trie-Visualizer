@@ -3,13 +3,16 @@ import { useState } from "react";
 import { MAX_KEY_LENGTH } from "./LeafNodeDraw";
 import nodeStyle from "./node-style";
 
+export type CoorsType = {
+    x: number
+    y: number
+
+}
+
 type NodeButtonProps = {
     _key: number[]
     value: Uint8Array | null
-    coors: {
-        x: number
-        y: number
-    }
+    coors: CoorsType
     label: string
     backgroundColor: string
 }

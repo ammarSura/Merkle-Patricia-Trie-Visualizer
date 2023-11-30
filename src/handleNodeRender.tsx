@@ -1,9 +1,10 @@
 import { BranchNode, ExtensionNode, LeafNode } from "@ethereumjs/trie";
-import ExtensionNodeDraw, { CoorsType } from "./ExtensionNodeDraw";
+import ExtensionNodeDraw from "./ExtensionNodeDraw";
 import { MPT } from "./mpt";
 import LeafNodeDraw from "./LeafNodeDraw";
 import BranchNodeDraw from "./BranchNodeDraw";
 import NullNodeDraw from "./NullNodeDraw";
+import { CoorsType } from "./NodeButton";
 
 export function handleNodeRender(node: BranchNode | ExtensionNode | LeafNode | null, coors: CoorsType, mpt: MPT) {
     if(node instanceof LeafNode) {

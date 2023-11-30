@@ -1,13 +1,10 @@
 import { ExtensionNode } from "@ethereumjs/trie"
-import NodeButton from "./NodeButton"
+import NodeButton, { CoorsType } from "./NodeButton"
 import { MPT } from "./mpt"
-import { handleNodeRender } from "./getNode"
+import { handleNodeRender } from "./handleNodeRender"
+import nodeStyle from "./node-style"
+import LineDraw from "./LineDraw"
 
-export type CoorsType = {
-    x: number
-    y: number
-
-}
 type ExtensionNodeProps = {
     trieNode: ExtensionNode
     coors: CoorsType
@@ -28,8 +25,18 @@ export default function ExtensionNodeDraw(props: ExtensionNodeProps) {
                 label={"Extension: "}
                 backgroundColor={"#74a1db"}
             />
+            <LineDraw
+                startPoint={{
+                    x: coors.x,
+                    y: coors.y
+                }}
+                endPoint={{
+                    x: coors.x,
+                    y: nextCoors.y
+                }}
+            />
             {
-                handleNodeRender(decodedChild, coors, mpt)
+                handleNodeRender(decodedChild, nextCoors, mpt)
             }
        </>
     )
