@@ -18,13 +18,15 @@ export default function KeyValueDisplay({ keyValuePairs }: KeyValueDisplayPropsT
         return 0
     })
     return (
-        <Stack align='center'>
+        // todo: fix overflow
+        <Stack align='center' overflow={'scroll'}>
             <Heading size='sm'>
                 Key Value Pairs
             </Heading>
         <TableContainer
             width='100%'
             maxWidth='100%'
+            overflow={'scroll'}
         >
             <Table
                 variant='striped'
