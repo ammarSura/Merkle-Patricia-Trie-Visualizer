@@ -1,11 +1,13 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { MPT } from "./mpt";
 import DrawTrie from "./DrawTrie";
 import KeyValueInput from "./KeyValueInput";
 import KeyValueDisplay from "./KeyValueDisplay";
-import { Box, Button, Heading, Stack } from "@chakra-ui/react";
+import { Box, Button, Heading, List, Stack, Text } from "@chakra-ui/react";
 import { getKeyValuePairInBytes } from "./mpt/utils";
-const keyValuePairsInit = [
+import useAlchemy from "./useAlchemy";
+import { TransactionResponse } from "alchemy-sdk";
+const keyValuePairsInit: KeyValue[] = [
   {
     key: 'ammar',
     value: '123'
@@ -19,14 +21,36 @@ const keyValuePairsInit = [
     value: '789'
   }
 ]
+
+type KeyValue = {
+  key: string
+  value: string
+}
 function App() {
   const [shouldReDrawTrie, setShouldReDrawTrie] = useState(false)
+  const { getBlockTransactions } = useAlchemy()
+  const [transactions, setTransactions] = useState<TransactionResponse[]>([])
   const mpt = useRef<MPT | null>(new MPT());
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const [keyValuePairs, setKeyValuePairs] = useState<{
-    key: string
-    value: string
-  }[]>([])
+  const [keyValuePairs, setKeyValuePairs] = useState<KeyValue[]>([])
+  const [transactionLoading, setTransactionLoading] = useState(false)
+  const accountsKeyValues = useMemo(() => {
+    if(!transactions.length) return []
+    const accountMap: {[key: string]: boolean} = {}
+    return transactions.reduce((accounts, transaction) => {
+      if(!transaction.r) return accounts
+      if(!accountMap[transaction.r]) {
+        const balance = parseInt(transaction.value._hex, 16)
+        accounts.push({
+          key: transaction.r,
+          value: JSON.stringify({
+            balance
+          })
+        })
+      }
+      return accounts
+    }, [] as KeyValue[])
+  }, [transactions])
 
   const generateTestCases = () => {
     mpt.current?.put(...getKeyValuePairInBytes('ammar', '123'))
@@ -46,8 +70,10 @@ function App() {
         Merkle Patricia Trie
       </Heading>
       <Box
-        border='solid'
         width='150vw'
+        height={'110vh'}
+        border='solid'
+        borderColor='transparent'
         overflow={'scroll'}
         ref={containerRef}
       >
@@ -57,7 +83,7 @@ function App() {
           shouldReDrawTrie={shouldReDrawTrie}
           setShouldReDrawTrie={setShouldReDrawTrie}
           startPoint={{
-            x: (containerRef.current?.getBoundingClientRect().width || 0)  / 2,
+            x: (containerRef.current?.getBoundingClientRect().width || 0) / 2,
             y: 100
           }}
         />
@@ -67,9 +93,12 @@ function App() {
           p='0.5rem'
           borderRadius='md'
           position='fixed'
-          right='0px'
+          right='1rem'
+          top='1rem'
           bg='white'
           boxShadow='lg'
+          overflow='scroll'
+          maxH={'fit-content'}
         >
         <KeyValueInput
           handleSubmit={(key, value) => {
@@ -91,7 +120,10 @@ function App() {
             onClick={() => {
               generateTestCases()
               setShouldReDrawTrie(!shouldReDrawTrie)
-            }}>
+            }}
+            size='md'
+            minH={'fit-content'}
+          >
           Generate Test Cases
         </Button>
         <Button
@@ -102,9 +134,70 @@ function App() {
             setKeyValuePairs([])
             setShouldReDrawTrie(!shouldReDrawTrie)
           }}
+          minH={'fit-content'}
         >
           Clear
         </Button>
+        <Button
+          isLoading={transactionLoading}
+          onClick={async() => {
+          setTransactionLoading(true)
+          const blockTransactions = await getBlockTransactions()
+          setTransactions(blockTransactions)
+          setTransactionLoading(false)
+        }}>
+          Get Transactions
+        </Button>
+        {
+          transactions.length && (
+            <Heading size='sm'>
+              Number of Transactions: {transactions.length}
+            </Heading>
+          )
+        }
+        <List
+          maxH={'15rem'}
+          overflow={'scroll'}
+        >
+          {
+            transactions.slice().map((transaction, index) => (
+              <Box
+                key={index}
+                p='0.5rem'
+                border='solid'
+                borderWidth='1px'
+                borderRadius='md'
+                mb='0.5rem'
+              >
+                <Text>
+                  <b>Hash:</b>{transaction.hash}
+                </Text>
+                <Text size='sm'>
+                  <b>To:</b> {transaction.r}
+                </Text>
+                <Text size='sm'>
+                  <b>From:</b> {transaction.from}
+                </Text>
+                <Text size='sm'>
+                  <b>Value:</b> {parseInt(transaction.value._hex, 16)}
+                </Text>
+              </Box>
+            ))
+          }
+        </List>
+        {
+          accountsKeyValues.length && (
+            <Button bg={'green.300'} color={'white'} onClick={() => {
+              setKeyValuePairs(accountsKeyValues.slice(0, 10))
+              for(const keyValue of accountsKeyValues.slice(0, 10)) {
+                const keyValuePair = getKeyValuePairInBytes(keyValue.key, keyValue.value)
+                mpt.current?.put(...keyValuePair)
+              }
+            }}>
+              Build Trie from Transactions
+            </Button>
+          )
+        }
         </Stack>
       </>
     )
