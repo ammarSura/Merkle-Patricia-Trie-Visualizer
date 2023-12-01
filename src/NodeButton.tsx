@@ -10,7 +10,7 @@ export type CoorsType = {
 
 type NodeButtonProps = {
     _key: number[]
-    value: Uint8Array | null
+    value: Uint8Array | string |null
     coors: CoorsType
     label: string
     backgroundColor: string
