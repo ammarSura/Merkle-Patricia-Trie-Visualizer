@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MPT } from "./mpt";
 import DrawTrie from "./DrawTrie";
 import KeyValueInput from "./KeyValueInput";
@@ -7,6 +7,8 @@ import { Box, Button, Heading, List, Stack, Text } from "@chakra-ui/react";
 import { getKeyValuePairInBytes } from "./mpt/utils";
 import useAlchemy from "./useAlchemy";
 import { TransactionResponse } from "alchemy-sdk";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { hexToBytes } from "@ethereumjs/util";
 const keyValuePairsInit: KeyValue[] = [
   {
     key: 'ammar',
@@ -33,6 +35,7 @@ function App() {
   const mpt = useRef<MPT | null>(new MPT());
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [keyValuePairs, setKeyValuePairs] = useState<KeyValue[]>([])
+  const [currentRootKey, setCurrentRootKey] = useState<Uint8Array | undefined>()
   const [transactionLoading, setTransactionLoading] = useState(false)
   const accountsKeyValues = useMemo(() => {
     if(!transactions.length) return []
@@ -58,6 +61,26 @@ function App() {
     mpt.current?.put(...getKeyValuePairInBytes('amar', '789'))
     setKeyValuePairs(keyValuePairsInit)
   }
+  const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(searchParams.get('nodeDbKey')) {
+      const nodeDbKey = searchParams.get('nodeDbKey') as string
+      const nodeDbKeyBytes = hexToBytes(nodeDbKey)
+      const nodeFound = mpt.current?.getDecodedNodeFromDb(nodeDbKeyBytes)
+      if(nodeFound) {
+        setCurrentRootKey(nodeDbKeyBytes)
+      } else {
+        setSearchParams(undefined)
+      }
+    } else {
+      setCurrentRootKey(mpt.current?.rootKey)
+    }
+    setShouldReDrawTrie(!shouldReDrawTrie)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, setSearchParams])
+
   return (
     mpt.current && (
       <>
@@ -70,15 +93,14 @@ function App() {
         Merkle Patricia Trie
       </Heading>
       <Box
-        width='150vw'
-        height={'110vh'}
+        width='130vw'
         border='solid'
         borderColor='transparent'
         overflow={'scroll'}
         ref={containerRef}
       >
         <DrawTrie
-          rootKey={mpt.current.rootKey}
+          rootKey={currentRootKey || mpt.current?.rootKey}
           mpt={mpt.current}
           shouldReDrawTrie={shouldReDrawTrie}
           setShouldReDrawTrie={setShouldReDrawTrie}
@@ -100,6 +122,7 @@ function App() {
           overflow='scroll'
           maxH={'fit-content'}
         >
+          <Box maxH={'10rem'}>
         <KeyValueInput
           handleSubmit={(key, value) => {
             setKeyValuePairs([...keyValuePairs, {
@@ -110,7 +133,9 @@ function App() {
             mpt.current?.put(...keyValuePair)
             setShouldReDrawTrie(!shouldReDrawTrie)
           }}
+
         />
+        </Box>
         <KeyValueDisplay
           keyValuePairs={keyValuePairs}
         />
@@ -127,10 +152,20 @@ function App() {
           Generate Test Cases
         </Button>
         <Button
+          bg='yellow.600'
+          color='white'
+          isDisabled={searchParams.get('nodeDbKey') === null}
+          onClick={() => {
+            navigate(-1)
+          }}>
+          Go Back to Previous Node
+        </Button>
+        <Button
           color='white'
           bg={'red.400'}
           onClick={() => {
             mpt.current = new MPT()
+            setCurrentRootKey(undefined)
             setKeyValuePairs([])
             setShouldReDrawTrie(!shouldReDrawTrie)
           }}
@@ -189,7 +224,8 @@ function App() {
           accountsKeyValues.length && (
             <Button bg={'green.300'} color={'white'} onClick={() => {
               setKeyValuePairs(accountsKeyValues.slice(0, 10))
-              for(const keyValue of accountsKeyValues.slice(0, 10)) {
+              setCurrentRootKey(undefined)
+              for(const keyValue of accountsKeyValues) {
                 const keyValuePair = getKeyValuePairInBytes(keyValue.key, keyValue.value)
                 mpt.current?.put(...keyValuePair)
               }
