@@ -33,8 +33,8 @@ export default function KeyValueDisplay({ keyValuePairs }: KeyValueDisplayPropsT
                 <Thead>
                     <Tr>
                         <Th>Key (Nibbles)</Th>
-                        <Th>Key (String)</Th>
                         <Th>Value</Th>
+                        <Th>Key (String)</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -42,8 +42,8 @@ export default function KeyValueDisplay({ keyValuePairs }: KeyValueDisplayPropsT
                         keyValuePairsSortedByKey.map((keyValuePair, index) => (
                             <Tr key={index}>
                                 <Td>{bytesToNibbles(utf8ToBytes(keyValuePair.key)).join(',')}</Td>
-                                <Td>{keyValuePair.key}</Td>
                                 <Td>{keyValuePair.value}</Td>
+                                <Td>{keyValuePair.key}</Td>
                             </Tr>
                         ))
                     }
