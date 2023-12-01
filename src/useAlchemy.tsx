@@ -3,6 +3,7 @@ import { useRef } from 'react';
 
 export default function useAlchemy() {
     const apiKey = import.meta.env.VITE_ALCHEMY_API_KEY;
+    console.log('apiKey', apiKey)
     if(!apiKey) throw new Error('Alchemy API key not found')
     const SETTINGS = {
         apiKey,
