@@ -5,7 +5,6 @@ import nodeStyle from "./node-style";
 export type CoorsType = {
     x: number
     y: number
-    childOffset?: number
 }
 
 type NodeButtonProps = {
@@ -14,16 +13,20 @@ type NodeButtonProps = {
     coors: CoorsType
     label: string
     backgroundColor: string
+    showEmptyKeyLabel?: boolean
 }
 export default function NodeButton({
     _key,
     value,
     coors,
     label,
-    backgroundColor
+    backgroundColor,
+    showEmptyKeyLabel
 }: NodeButtonProps) {
     const [showValue, setShowValue] = useState(false)
-    const buttonText = showValue ? `Value: ${value}`: _key.length ? `Key: ${_key.join(',')}` : ''
+    const valueText = `Value: ${value}`
+    const keyText = _key.length ? `Key: ${_key.join(',')}` : showEmptyKeyLabel ? 'Key prefix empty at this node' : ''
+    const buttonText = showValue ? valueText : keyText
     return (
         <Button
             onClick={() => {
