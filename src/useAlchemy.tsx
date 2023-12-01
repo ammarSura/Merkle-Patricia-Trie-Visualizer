@@ -1,11 +1,13 @@
 import { Network, Alchemy } from 'alchemy-sdk';
 import { useRef } from 'react';
-const SETTINGS = {
-    apiKey: "20tMln_P8mxBB4I8WV0__VkQbmLvHirI",
-    network: Network.ETH_MAINNET,
-};
 
 export default function useAlchemy() {
+    const apiKey = process.env.REACT_APP_ALCHEMY_API_KEY;
+    if(!apiKey) throw new Error('Alchemy API key not found')
+    const SETTINGS = {
+        apiKey,
+        network: Network.ETH_MAINNET,
+    };
     const alchemy = new Alchemy(SETTINGS);
     const latestBlockRef = useRef<number | null>(null);
 

@@ -67,7 +67,6 @@ export default function ExtensionNodeDraw({
                     icon={<ArrowDownIcon boxSize={'1.5rem'}/>}
                 >
                 </IconButton>
-
             </Link>
         </>
     )
