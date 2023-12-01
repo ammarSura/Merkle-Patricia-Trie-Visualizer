@@ -22,7 +22,7 @@ export default function LeafNodeDraw({
             coors={coors}
             _key={key}
             value={value}
-            label={"Leaf: "}
+            label={"Leaf"}
             backgroundColor={"#74c288"}
         />
     )

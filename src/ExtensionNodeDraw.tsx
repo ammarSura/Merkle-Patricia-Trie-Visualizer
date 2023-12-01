@@ -32,7 +32,7 @@ export default function ExtensionNodeDraw(props: ExtensionNodeProps) {
                 coors={coors}
                 _key={key}
                 value={value}
-                label={"Extension: "}
+                label={"Extn"}
                 backgroundColor={"#74a1db"}
             />
             <LineDraw

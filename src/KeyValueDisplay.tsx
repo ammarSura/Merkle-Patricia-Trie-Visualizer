@@ -12,6 +12,11 @@ export default function KeyValueDisplay({ keyValuePairs }: KeyValueDisplayPropsT
     if(keyValuePairs.length === 0) return (
         null
     )
+    const keyValuePairsSortedByKey = keyValuePairs.sort((a, b) => {
+        if(a.key < b.key) return -1
+        if(a.key > b.key) return 1
+        return 0
+    })
     return (
         <Stack align='center'>
             <Heading size='sm'>
@@ -34,7 +39,7 @@ export default function KeyValueDisplay({ keyValuePairs }: KeyValueDisplayPropsT
                 </Thead>
                 <Tbody>
                     {
-                        keyValuePairs.map((keyValuePair, index) => (
+                        keyValuePairsSortedByKey.map((keyValuePair, index) => (
                             <Tr key={index}>
                                 <Td>{bytesToNibbles(utf8ToBytes(keyValuePair.key)).join(',')}</Td>
                                 <Td>{keyValuePair.key}</Td>

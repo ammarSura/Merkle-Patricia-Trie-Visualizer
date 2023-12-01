@@ -1,6 +1,5 @@
 import { Button, Tooltip } from "@chakra-ui/react";
 import { useState } from "react";
-import { MAX_KEY_LENGTH } from "./LeafNodeDraw";
 import nodeStyle from "./node-style";
 
 export type CoorsType = {
@@ -24,8 +23,7 @@ export default function NodeButton({
     backgroundColor
 }: NodeButtonProps) {
     const [showValue, setShowValue] = useState(false)
-    const buttonText = showValue ? `Value: ${value}`: `${label}${_key.join(',')}`
-    const truncatedText = buttonText.length > MAX_KEY_LENGTH ? buttonText.slice(0, MAX_KEY_LENGTH) + '...' : buttonText
+    const buttonText = showValue ? `Value: ${value}`: _key.length ? `Key: ${_key.join(',')}` : ''
     return (
         <Button
             onClick={() => {
@@ -38,11 +36,9 @@ export default function NodeButton({
                 ...nodeStyle
             }}
         >
-            {
-                buttonText.length > MAX_KEY_LENGTH ? <Tooltip label={buttonText}>
-                    {truncatedText}
-                </Tooltip> : buttonText
-            }
+                <Tooltip label={buttonText}>
+                    {showValue ? 'Value' : label}
+                </Tooltip>
         </Button>
     )
 }

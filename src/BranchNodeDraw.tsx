@@ -28,7 +28,7 @@ export default function BranchNodeDraw({
        <NodeButton
             _key={[]}
             value={value}
-            label={"Branch "}
+            label={"Branch"}
             backgroundColor={"#c4ac80"}
             coors={coors}
        />
