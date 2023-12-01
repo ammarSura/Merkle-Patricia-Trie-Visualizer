@@ -16,6 +16,16 @@ export default function ExtensionNodeDraw(props: ExtensionNodeProps) {
     const key = trieNode.key()
     const value = trieNode.value()
     const decodedChild = mpt.getDecodedNodeFromDb(value as Uint8Array)
+    const nextNodeHeightFactor = 1.75
+    const {
+        x,
+        y,
+        childOffset
+    } = coors
+    const nextCoors = {
+        x: x,
+        y: y + ((nodeStyle.height as number) * nextNodeHeightFactor) + (childOffset || 0)
+    }
     return (
         <>
             <NodeButton

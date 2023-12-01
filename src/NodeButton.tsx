@@ -6,7 +6,7 @@ import nodeStyle from "./node-style";
 export type CoorsType = {
     x: number
     y: number
-
+    childOffset?: number
 }
 
 type NodeButtonProps = {
