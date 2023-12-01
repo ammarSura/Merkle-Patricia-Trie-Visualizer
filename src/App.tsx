@@ -44,7 +44,7 @@ function App() {
         accounts.push({
           key: transaction.r,
           value: JSON.stringify({
-            balance
+            balance: `${balance / 10 ** 18} eth`
           })
         })
       }
