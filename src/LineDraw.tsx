@@ -32,11 +32,11 @@ export default function LineDraw({
                 left: adjustedStartPoint.x,
                 width: 0,
                 height: getDistance(adjustedStartPoint, adjustedEndPoint),
-                border: '0.5px solid',
+                border: '1px solid',
                 transform: `rotate(${getAngle(adjustedStartPoint, adjustedEndPoint) + 270}deg)`,
                 transformOrigin: '0% 0%',
                 zIndex: -1,
-                borderColor: borderColor || 'grey'
+                borderColor: borderColor || '#b8b7b4'
             }}
         >
         </div>
