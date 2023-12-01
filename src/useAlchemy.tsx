@@ -2,7 +2,7 @@ import { Network, Alchemy } from 'alchemy-sdk';
 import { useRef } from 'react';
 
 export default function useAlchemy() {
-    const apiKey = process.env.REACT_APP_ALCHEMY_API_KEY;
+    const apiKey = process.env.VITE_ALCHEMY_API_KEY;
     if(!apiKey) throw new Error('Alchemy API key not found')
     const SETTINGS = {
         apiKey,
