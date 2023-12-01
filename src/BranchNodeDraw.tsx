@@ -78,7 +78,6 @@ export default function BranchNodeDraw({
         {
             childrenNodes.map((child, index) => {
                 const decodedChild = child ? decodeNode(child as Uint8Array) : null
-                console.log(index, decodedChild)
                 const nextX = index < 8 ? midPointX - offset * (8 - index) : midPointX + offset * (index % 8)
                 const nextY = coors.y + (nodeStyle.height as number) * childNodeHeightFactor
                 const nextCoors: CoorsType = {
