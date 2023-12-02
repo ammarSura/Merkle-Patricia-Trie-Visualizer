@@ -168,6 +168,7 @@ function App() {
             setCurrentRootKey(undefined)
             setKeyValuePairs([])
             setShouldReDrawTrie(!shouldReDrawTrie)
+            navigate('/')
           }}
           minH={'fit-content'}
         >
