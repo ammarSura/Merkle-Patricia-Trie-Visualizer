@@ -101,6 +101,21 @@ tester('failing test case', () => {
     })
 })
 
+tester('test if it will replace an item', () => {
+    const mpt = new MPT()
+    keyValuePairTest(mpt, 'abc', 'xyz')
+    keyValuePairTest(mpt, 'abc', 'pqr')
+})
+
+tester('test if branch stores value', () => {
+    const mpt = new MPT()
+    keyValuePairTest(mpt, 'abc', 'xyz')
+    keyValuePairTest(mpt, 'ab', 'pqr')
+    const foundItem = mpt.get(utf8ToBytes('ab'))
+    if(foundItem?.type !== 'branch') {
+        throw new Error("Item is not a branch")
+    }
+})
 
 function tester(title: string, func: () => void) {
     try {

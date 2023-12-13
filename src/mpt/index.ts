@@ -51,10 +51,15 @@ export class MPT {
                 }
             }
         } else if(node instanceof BranchNode) {
-            if(node.value()) {
-                if(areNibblesEqual(searchKey, bytesToNibbles(node.value()!)) || searchKey.length === 0) {
+            if(searchKey.length === 0) {
+
+                if(node.value()) {
                     return {
                         foundNode: node,
+                    }
+                } else {
+                    return {
+                        foundNode: null,
                     }
                 }
             }
@@ -122,7 +127,6 @@ export class MPT {
 
         return newBranchNode
     }
-
     protected _handleLeafNodeUpdate(node: LeafNode, key: Nibbles, value: Uint8Array): ExtensionNode | BranchNode {
         const targetNodeKey = key.slice()
         const matchingNodeKeyPrefixLength = matchingNibbleLength(node.key(), targetNodeKey)
@@ -292,7 +296,8 @@ export class MPT {
         if('foundNode' in res && res.foundNode !== null) {
             return {
                 key: bytesToNibbles(key),
-                value: res.foundNode.value()
+                value: res.foundNode.value(),
+                type: res.foundNode instanceof LeafNode ? 'leaf' : res.foundNode instanceof ExtensionNode ? 'extension' : res.foundNode instanceof BranchNode ? 'branch' : 'unknown',
             }
         } else {
             return null
